@@ -20,7 +20,7 @@ early 2024.
 If you have a Jam Launch developer account, you can deploy and test your own
 version of the project with one click from the addon's editor plugin:
 
-[!](https://youtu.be/apw_38sqIZ8)
+[![watch demo video](https://img.youtube.com/vi/apw_38sqIZ8/0.jpg)](https://youtu.be/apw_38sqIZ8)
 
 ## Test locally
 
