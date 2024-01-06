@@ -1,14 +1,15 @@
 # Jam Launch Example Project
 
 This project demonstrates how to use the Jam Launch addon to make a multiplayer
-game in Godot 4. Integration with the Jam Launch addon allows games to be
-deployed and hosted in the Jam Launch cloud.
+game in Godot 4. The Jam Launch addon simplifies deployment and hosting of
+multiplayer games.
 
-You can sign up for an account [here](https://app.jamlaunch.com/?signUp=1).
+Most features are only available with a Jam Launch account. You can sign up for
+an account [here](https://app.jamlaunch.com/?signUp=1).
 
 ## Try out a deployed version
 
-With a regular Jam Launch account, you can play an already deployed version of
+With a regular Jam Launch account, you can play a deployed version of
 the example project [here](https://app.jamlaunch.com/g/FP8XMOFFKp/x12).
 
 The current hosting servers are in eastern North America, so you may encounter
@@ -17,15 +18,16 @@ early 2024.
 
 ## Deploy with a Jam Launch Developer account
 
-If you have a Jam Launch developer account, you can deploy and test your own
-version of the project with one click from the addon's editor plugin:
+With a Jam Launch developer account, you can deploy and test any addon-enabled
+project (including this one) with one click from the addon's editor plugin:
 
 [![watch demo video](https://img.youtube.com/vi/apw_38sqIZ8/0.jpg)](https://youtu.be/apw_38sqIZ8)
 
 ## Test locally
 
-If you don't have a developer account yet, you can still run the example (or
-your own game) in local hosting mode with the addon.
+If you don't have a developer account yet, you can still run games in local
+hosting mode with the addon. This allows you to verify game functionality and
+compatibility with Jam Launch.
 
 ## Get Help
 
