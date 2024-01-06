@@ -1,0 +1,62 @@
+[gd_scene load_steps=5 format=3 uid="uid://dl6k1fmnn1mnh"]
+
+[ext_resource type="Script" path="res://Game.gd" id="1_tno48"]
+[ext_resource type="PackedScene" uid="uid://cbyjjq47i081w" path="res://Level1.tscn" id="2_3t1np"]
+[ext_resource type="Script" path="res://addons/jam_launch/core/JamConnect.gd" id="3_21l01"]
+[ext_resource type="PackedScene" uid="uid://bp045ebtvh6js" path="res://addons/jam_launch/ui/ChatConsole.tscn" id="3_arn8j"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_tno48")
+
+[node name="Level1" parent="." instance=ExtResource("2_3t1np")]
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="M" type="MarginContainer" parent="HUD"]
+modulate = Color(1, 1, 1, 0.784314)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -200.0
+offset_right = 400.0
+grow_vertical = 0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HB" type="HBoxContainer" parent="HUD/M"]
+layout_mode = 2
+
+[node name="VB" type="VBoxContainer" parent="HUD/M/HB"]
+layout_mode = 2
+alignment = 2
+
+[node name="Menu" type="MenuButton" parent="HUD/M/HB/VB"]
+layout_mode = 2
+text = "..."
+flat = false
+item_count = 2
+popup/item_0/text = "Leave Game"
+popup/item_0/id = 0
+popup/item_1/text = "Exit to Desktop"
+popup/item_1/id = 1
+
+[node name="Console" type="Button" parent="HUD/M/HB/VB"]
+layout_mode = 2
+focus_mode = 0
+text = ">"
+
+[node name="ChatConsole" parent="HUD/M/HB" instance=ExtResource("3_arn8j")]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="JamConnect" type="Node" parent="."]
+script = ExtResource("3_21l01")
+
+[connection signal="pressed" from="HUD/M/HB/VB/Console" to="." method="_on_console_pressed"]
+[connection signal="game_db_async_result" from="JamConnect" to="." method="_on_jam_connect_game_db_async_result"]
+[connection signal="player_disconnected" from="JamConnect" to="." method="_on_jam_connect_player_disconnected"]
+[connection signal="player_verified" from="JamConnect" to="." method="_on_jam_connect_player_verified"]
+[connection signal="server_pre_ready" from="JamConnect" to="." method="_on_jam_connect_server_pre_ready"]
+[connection signal="server_shutting_down" from="JamConnect" to="." method="_on_jam_connect_server_shutting_down"]
