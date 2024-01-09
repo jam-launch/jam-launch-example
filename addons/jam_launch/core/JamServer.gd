@@ -34,8 +34,30 @@ func server_start(args: Dictionary):
 	
 	dev_mode = "dev" in args and args["dev"]
 	
-	var peer = ENetMultiplayerPeer.new()
-	var err = peer.create_server(listen_port, MAX_CLIENTS)
+	var peer
+	var err
+	if OS.has_feature("websocket"):
+		peer = WebSocketMultiplayerPeer.new()
+		var cert_base = "certs"
+		var key_path = cert_base.path_join("private.key")
+		var crt_path = cert_base.path_join("certificate.crt")
+		printerr("cert base files: ", DirAccess.get_files_at(cert_base))
+		var key = CryptoKey.new()
+		err = key.load(key_path)
+		if err != OK:
+			push_error("FATAL: Failed to load server key at %s" % key_path)
+			get_tree().quit(1)
+			return
+		var cert = X509Certificate.new()
+		err = cert.load(crt_path)
+		if err != OK:
+			push_error("FATAL: Failed to load server cert at %s" % crt_path)
+			get_tree().quit(1)
+			return
+		err = peer.create_server(listen_port, "*", TLSOptions.server(key, cert))
+	else:
+		peer = ENetMultiplayerPeer.new()
+		err = peer.create_server(listen_port, MAX_CLIENTS)
 	if err != OK:
 		push_error("FATAL: Failed to start server on port %d - err code %d" % [listen_port, err])
 		get_tree().quit(1)

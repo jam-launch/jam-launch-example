@@ -12,7 +12,15 @@ func _init():
 		dev_mode_api = DevModeApi.new()
 		add_child(dev_mode_api)
 
+func _get_web_gjwt() -> Variant:
+	var js_return = JavaScriptBridge.eval("getJamLaunchGJWT();")
+	if !js_return:
+		printerr("failed to retrieve GJWT in browser context")
+	return js_return
+
 func get_included_gjwt() -> Variant:
+	if OS.get_name() == "Web":
+		return _get_web_gjwt()
 	
 	var gjwt_path := OS.get_executable_path().get_base_dir()
 	if OS.get_name() == "macOS":

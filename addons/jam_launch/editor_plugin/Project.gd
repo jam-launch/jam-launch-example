@@ -5,6 +5,8 @@ extends VBoxContainer
 @onready var err_label: Label = $ErrMsg
 @onready var deployment: VBoxContainer = $M/VB/Deployment
 
+@onready var net_mode_box: OptionButton = $M/VB/HB/HB/NetworkMode
+
 signal request_projects_update()
 signal go_back()
 
@@ -42,9 +44,12 @@ func show_project(project_id: String, project_name: String = "..."):
 
 func refresh_project() -> bool:
 	$AutoRefreshTimer.stop()
+	
+	net_mode_box.disabled = true
 	$TopBar/BtnRefresh.disabled = true
 	var res = await project_api.get_project(active_id)
 	$TopBar/BtnRefresh.disabled = false
+	net_mode_box.disabled = false
 	if res.errored:
 		error_msg = res.error_msg
 		return false
@@ -57,6 +62,15 @@ func setup_project_data(p):
 	
 	active_project = p
 	title.text = p["project_name"]
+	
+	var net_mode = active_project["configs"][0]["network_mode"]
+	net_mode_box.disabled = false
+	if net_mode == "enet":
+		net_mode_box.select(0)
+	elif net_mode == "websocket":
+		net_mode_box.select(1)
+	else:
+		net_mode_box.select(-1)
 	
 	if "releases" in active_project and len(active_project["releases"]) > 0:
 		$M/VB/DeploymentsLabel.text = ""
@@ -132,9 +146,11 @@ func _on_btn_upload_pressed() -> void:
 
 func _on_btn_deploy_pressed() -> void:
 	error_msg = null
+	net_mode_box.disabled = true
 	$M/VB/BtnDeploy.disabled = true
 	var project_dir = _plugin().get_editor_interface().get_resource_filesystem().get_filesystem()
 	var res = await project_api.build_project(active_id, project_dir)
+	net_mode_box.disabled = false
 	$M/VB/BtnDeploy.disabled = false
 	if res.errored:
 		error_msg = res.error_msg
@@ -171,3 +187,26 @@ func _on_confirm_delete_confirmed():
 		error_msg = res.error_msg
 		return
 	go_back.emit()
+
+func _on_option_button_item_selected(index):
+	
+	if not active_project:
+		return
+	
+	var cfg = {}
+	if index == 0:
+		cfg["network_mode"] = "enet"
+	elif index == 1:
+		cfg["network_mode"] = "websocket"
+	else:
+		return
+	
+	$M/VB/BtnDeploy.disabled = true
+	net_mode_box.disabled = true
+	var res = await project_api.post_config(active_id, cfg)
+	net_mode_box.disabled = false
+	$M/VB/BtnDeploy.disabled = false
+	
+	if res.errored:
+		error_msg = res.error_msg
+		return

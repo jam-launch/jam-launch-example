@@ -82,3 +82,10 @@ func update_release(project_id: String, release_id: String, props: Dictionary) -
 		HTTPClient.METHOD_POST,
 		props
 	)
+
+func post_config(project_id: String, cfg: Dictionary) -> Result:
+	return await _json_http(
+		"/projects/%s/config" % project_id,
+		HTTPClient.METHOD_POST,
+		cfg
+	)

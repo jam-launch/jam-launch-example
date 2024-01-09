@@ -79,9 +79,19 @@ func client_session_request(ip: String, port: int, token: String):
 	current_client_token = token
 	client_ui.visible = false
 	
+	if OS.has_feature("websocket"):
+		ip = "wss://jamserve.net"
+	
 	jc.log_event.emit("Attempting to connect to %s:%d..." % [ip, port])
-	var peer = ENetMultiplayerPeer.new()
-	var err = peer.create_client(ip, port)
+	
+	var peer
+	var err
+	if OS.has_feature("websocket"):
+		peer = WebSocketMultiplayerPeer.new()
+		err = peer.create_client("%s:%d" % [ip, port], TLSOptions.client_unsafe())
+	else:
+		peer = ENetMultiplayerPeer.new()
+		err = peer.create_client(ip, port)
 	if err != OK:
 		jc.log_event.emit("Error: %d" % err)
 		client_ui.visible = true
