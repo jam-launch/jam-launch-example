@@ -1,0 +1,3 @@
+[submodule "addons/jam_launch"]
+	path = addons/jam_launch
+	url = https://github.com/jam-launch/jam-launch-addon.git
