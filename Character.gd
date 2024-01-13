@@ -39,6 +39,16 @@ var state_buffer = []
 var state_interp: float = 0.0
 var got_initial_state = false
 var target_state_buffer_len = 3
+var target_state_buffer_len_min = 3
+
+# for dynamic client state buffer limiting
+var segment_time: float = 0.0
+var segment_length: float = 5.0
+var drops_in_segment: int = 0
+var drops_threshold: int = 2
+var dropless_segments: int = 0
+var dropless_threshold: int = 5
+var buffer_increases: int = 0
 
 func _ready():
 	if multiplayer.get_unique_id() == pid:
@@ -120,6 +130,7 @@ func _apply_sync_state():
 		var overbuffered: int = len(state_buffer) - target_state_buffer_len
 		if overbuffered > 0:
 			push_warning("dropping %d over-buffered states" % overbuffered)
+			drops_in_segment += 1
 			state_interp = sync_interval
 			state_buffer = state_buffer.slice(overbuffered)	
 		position = state_buffer[0]["pos"].lerp(state_buffer[1]["pos"], state_interp / sync_interval)
@@ -133,6 +144,30 @@ func _apply_sync_state():
 func _physics_process(delta):
 	if not multiplayer.is_server():
 		state_interp += delta
+		
+		# adjust state buffer max based on quality of network
+		segment_time += delta
+		if segment_time >= segment_length:
+			if drops_in_segment == 0:
+				dropless_segments += 1
+				if dropless_segments > dropless_threshold:
+					if target_state_buffer_len > target_state_buffer_len_min:
+						target_state_buffer_len -= 1
+						print("decreasing state buffer to %d" % target_state_buffer_len)
+					dropless_segments = 0
+			elif drops_in_segment > drops_threshold:
+				dropless_segments = 0
+				dropless_threshold += 1
+				target_state_buffer_len += 1
+				buffer_increases += 1
+				print("increasing state buffer to %d" % target_state_buffer_len)
+				if buffer_increases > 3:
+					buffer_increases = 0
+					target_state_buffer_len_min += 1
+			
+			drops_in_segment = 0
+			segment_time = 0.0
+			
 		_apply_sync_state()
 		return
 		
