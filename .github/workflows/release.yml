@@ -23,7 +23,6 @@ jobs:
         run: |
           git config --global user.name 'Jam Launch GitHub Bot'
           git config --global user.email 'github-bot@jamlaunch.com'
-          git commit -am "automated release updates for ${{ env.example_version }}"
           git tag ${{ env.example_version }}
           git push
           git push --tags
