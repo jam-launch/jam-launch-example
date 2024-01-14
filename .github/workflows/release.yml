@@ -1,0 +1,47 @@
+name: Asset Library Export
+on:
+  workflow_dispatch:
+
+jobs:
+
+  PackageAndRelease:
+    name: Package project for the asset library
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          path: example
+      
+      - name: Determine version
+        run: echo "example_version=${{ github.run_number }}.$(date +%Y%m%d)" >> "$GITHUB_ENV"
+      
+      - name: Update version in repo 
+        working-directory: example
+        run: |
+          git config --global user.name 'Jam Launch GitHub Bot'
+          git config --global user.email 'github-bot@jamlaunch.com'
+          git commit -am "automated release updates for ${{ env.example_version }}"
+          git tag ${{ env.example_version }}
+          git push
+          git push --tags
+      
+      - name: Package the project files
+        working-directory: example
+        run: |
+          rm -rf addons/jam_launch/.github
+          rm -rf addons/jam_launch/.gitattributes
+          rm -rf addons/jam_launch/.git
+          rm -rf addons/jam_launch/.gitmodules
+          rm -rf .github
+          rm -rf .gitmodules
+          rm -rf .git
+          zip -r ../jam-launch-example-project.zip .
+      
+      - uses: ncipollo/release-action@v1
+        with:
+          body: "A simple Godot project meant to demonstrate Jam Launch multiplayer capabilities"
+          artifacts: "jam-launch-example-project.zip"
+          tag: ${{ env.example_version }}
