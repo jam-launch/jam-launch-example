@@ -115,3 +115,14 @@ func _on_jam_connect_server_pre_ready():
 		prev_log_text += line + "\n"
 		n += 1
 		line = prev_log.get_line()
+
+
+func _on_jam_connect_local_player_joining():
+	$HUD.visible = true
+	
+func _on_jam_connect_local_player_joined():
+	pass
+
+func _on_jam_connect_local_player_left():
+	$HUD.visible = false
+	$TitleZone/TitleCam.make_current()

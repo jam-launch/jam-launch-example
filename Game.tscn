@@ -1,16 +1,77 @@
-[gd_scene load_steps=5 format=3 uid="uid://dl6k1fmnn1mnh"]
+[gd_scene load_steps=6 format=3 uid="uid://dl6k1fmnn1mnh"]
 
 [ext_resource type="Script" path="res://Game.gd" id="1_tno48"]
 [ext_resource type="PackedScene" uid="uid://cbyjjq47i081w" path="res://Level1.tscn" id="2_3t1np"]
+[ext_resource type="Texture2D" uid="uid://cjtoctkw3rj7r" path="res://addons/jam_launch/assets/star-jar-outlined_16x16.png" id="2_moika"]
 [ext_resource type="Script" path="res://addons/jam_launch/core/JamConnect.gd" id="3_21l01"]
 [ext_resource type="PackedScene" uid="uid://bp045ebtvh6js" path="res://addons/jam_launch/ui/ChatConsole.tscn" id="3_arn8j"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_tno48")
 
+[node name="TitleZone" type="Node2D" parent="."]
+position = Vector2(-2000, 0)
+
+[node name="TitleCam" type="Camera2D" parent="TitleZone"]
+position = Vector2(4, 0)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="TitleZone"]
+position = Vector2(-529, -485)
+amount = 5
+lifetime = 5.0
+explosiveness = 0.22
+texture = ExtResource("2_moika")
+direction = Vector2(1, 1)
+spread = 90.0
+gravity = Vector2(0, 100)
+initial_velocity_max = 300.0
+angular_velocity_min = -200.0
+angular_velocity_max = 200.0
+
+[node name="CPUParticles2D2" type="CPUParticles2D" parent="TitleZone"]
+position = Vector2(-114, -483)
+amount = 5
+lifetime = 5.0
+explosiveness = 0.22
+texture = ExtResource("2_moika")
+direction = Vector2(1, 1)
+spread = 90.0
+gravity = Vector2(0, 100)
+initial_velocity_max = 300.0
+angular_velocity_min = -200.0
+angular_velocity_max = 200.0
+
+[node name="CPUParticles2D3" type="CPUParticles2D" parent="TitleZone"]
+position = Vector2(137, -483)
+rotation = 3.14159
+amount = 5
+lifetime = 5.0
+explosiveness = 0.22
+texture = ExtResource("2_moika")
+direction = Vector2(1, -1)
+spread = 90.0
+gravity = Vector2(0, 100)
+initial_velocity_max = 300.0
+angular_velocity_min = -200.0
+angular_velocity_max = 200.0
+
+[node name="CPUParticles2D4" type="CPUParticles2D" parent="TitleZone"]
+position = Vector2(518, -483)
+rotation = 3.14159
+amount = 5
+lifetime = 5.0
+explosiveness = 0.22
+texture = ExtResource("2_moika")
+direction = Vector2(1, -1)
+gravity = Vector2(0, 100)
+initial_velocity_max = 300.0
+angular_velocity_min = -200.0
+angular_velocity_max = 200.0
+
 [node name="Level1" parent="." instance=ExtResource("2_3t1np")]
 
 [node name="HUD" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="M" type="MarginContainer" parent="HUD"]
 modulate = Color(1, 1, 1, 0.784314)
@@ -56,6 +117,9 @@ script = ExtResource("3_21l01")
 
 [connection signal="pressed" from="HUD/M/HB/VB/Console" to="." method="_on_console_pressed"]
 [connection signal="game_db_async_result" from="JamConnect" to="." method="_on_jam_connect_game_db_async_result"]
+[connection signal="local_player_joined" from="JamConnect" to="." method="_on_jam_connect_local_player_joined"]
+[connection signal="local_player_joining" from="JamConnect" to="." method="_on_jam_connect_local_player_joining"]
+[connection signal="local_player_left" from="JamConnect" to="." method="_on_jam_connect_local_player_left"]
 [connection signal="player_disconnected" from="JamConnect" to="." method="_on_jam_connect_player_disconnected"]
 [connection signal="player_verified" from="JamConnect" to="." method="_on_jam_connect_player_verified"]
 [connection signal="server_pre_ready" from="JamConnect" to="." method="_on_jam_connect_server_pre_ready"]
