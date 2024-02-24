@@ -53,6 +53,7 @@ var buffer_increases: int = 0
 func _ready():
 	if multiplayer.get_unique_id() == pid:
 		$Camera2D.make_current()
+	
 
 func set_player_data(data):
 	if data == null:

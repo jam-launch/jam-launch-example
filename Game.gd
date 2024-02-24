@@ -120,8 +120,26 @@ func _on_jam_connect_server_pre_ready():
 func _on_jam_connect_local_player_joining():
 	$HUD.visible = true
 	
-func _on_jam_connect_local_player_joined():
-	pass
+func _on_jam_connect_local_player_joined(pinfo: Dictionary):
+	if OS.is_debug_build():
+		return
+	# example of checking the game configuration to see who the host is (this
+	# will not be relevant in every type of game)
+	jc.request_config.rpc_id(1, "host")
+	var result = await jc.config_request_result
+	if result[2]:
+		printerr("error getting config info for '", result[0], "': ", result[2])
+	else:
+		print("Got config info: ", result[0], "='", result[1], "'")
+		var hosts = result[1].split(",")
+		if hosts.has(pinfo["name"]):
+			print("I am the host")
+			jc.edit_config.rpc_id(1, "host", pinfo["name"] + ",example-buddy")
+			var set_result = await jc.config_set_request_result
+			if set_result[1]:
+				printerr("problem updating the config: %s" % set_result[1])
+		else:
+			print("I am not the host")
 
 func _on_jam_connect_local_player_left():
 	$HUD.visible = false
