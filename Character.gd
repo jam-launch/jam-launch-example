@@ -73,7 +73,7 @@ func set_x_movement(amount: float):
 		return
 	x_movement = clampf(amount, -1.0, 1.0)
 
-@rpc("authority", "call_remote", "unreliable", 2)
+@rpc("authority", "call_remote", "unreliable")
 func sync_state(state):
 	if len(state_buffer) < 1:
 		got_initial_state = true
@@ -101,7 +101,10 @@ func _unhandled_input(event):
 		return
 	
 	if event.is_action_pressed("ui_accept"):
-		do_a_jump.rpc_id(1)
+		if multiplayer.is_server():
+			jump_requested = true
+		else:
+			do_a_jump.rpc_id(1)
 
 func _process(delta):
 	if multiplayer.is_server():
@@ -114,7 +117,10 @@ func _process(delta):
 		return
 	var x_input = Input.get_axis("ui_left", "ui_right")
 	if x_input != last_x_input:
-		set_x_movement.rpc_id(1, x_input)
+		if multiplayer.is_server():
+			x_movement = clampf(x_input, -1.0, 1.0)
+		else:
+			set_x_movement.rpc_id(1, x_input)
 		last_x_input = x_input
 
 func _apply_sync_state():
@@ -186,6 +192,7 @@ func _physics_process(delta):
 		velocity.x = move_toward(velocity.x, 0, SPEED * .8)
 
 	move_and_slide()
+	
 	
 	sync_clock += delta
 	if sync_clock > sync_interval:

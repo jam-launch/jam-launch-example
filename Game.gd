@@ -69,10 +69,13 @@ func _on_jam_connect_player_disconnected(pid: int, pinfo):
 func _on_jam_connect_player_verified(pid: int, pinfo):
 	var player_name = pinfo.get("name", "<>")
 	var player_db_key: String = "PLR-%s" % player_name
-	var player_data = jc.server.db.get_game_data(player_db_key)
-	game_log_data.append("player '%s' joined at %s" % [player_name, Time.get_datetime_string_from_system(true)])
 	
-	jc.notify_players.rpc_id(pid, "Log from previous game:\n%s" % prev_log_text)
+	var player_data = null
+	if jc.server:
+		player_data = jc.server.db.get_game_data(player_db_key)
+		jc.notify_players.rpc_id(pid, "Log from previous game:\n%s" % prev_log_text)
+		
+	game_log_data.append("player '%s' joined at %s" % [player_name, Time.get_datetime_string_from_system(true)])
 	$Level1.spawn_player(pid, player_name, player_data)
 
 
@@ -83,6 +86,8 @@ func _on_jam_connect_player_verified(pid: int, pinfo):
 
 # Saves a contrived "game log" in response to the server shutting down
 func _on_jam_connect_server_shutting_down():
+	if not jc.server:
+		return #P2P
 	if not multiplayer.is_server() or jc.server.dev_mode:
 		return
 		
@@ -98,6 +103,8 @@ func _on_jam_connect_server_shutting_down():
 # Load part of the contrived "game log" from the previous function as prev_log_text in response to
 # the server starting up.
 func _on_jam_connect_server_pre_ready():
+	if not jc.server:
+		return #P2P
 	if not multiplayer.is_server() or jc.server.dev_mode:
 		return
 	
