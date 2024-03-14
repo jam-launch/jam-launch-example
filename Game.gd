@@ -126,6 +126,7 @@ func _on_jam_connect_server_pre_ready():
 
 func _on_jam_connect_local_player_joining():
 	$HUD.visible = true
+	$HUD/TouchControl.visible = OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios")
 	
 func _on_jam_connect_local_player_joined(pinfo: Dictionary):
 	if OS.is_debug_build():
@@ -151,3 +152,27 @@ func _on_jam_connect_local_player_joined(pinfo: Dictionary):
 func _on_jam_connect_local_player_left():
 	$HUD.visible = false
 	$TitleZone/TitleCam.make_current()
+
+func _on_jump_button_down():
+	var e = InputEventAction.new()
+	e.action = &"jump"
+	e.pressed = true
+	Input.parse_input_event(e)
+
+func _on_jump_button_up():
+	var e = InputEventAction.new()
+	e.action = &"jump"
+	e.pressed = false
+	Input.parse_input_event(e)
+
+func _on_right_button_down():
+	Input.action_press(&"ui_right")
+
+func _on_right_button_up():
+	Input.action_release(&"ui_right")
+
+func _on_left_button_down():
+	Input.action_press(&"ui_left")
+
+func _on_left_button_up():
+	Input.action_release(&"ui_left")

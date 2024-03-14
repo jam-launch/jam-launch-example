@@ -100,7 +100,7 @@ func _unhandled_input(event):
 	if multiplayer.get_unique_id() != pid:
 		return
 	
-	if event.is_action_pressed("ui_accept"):
+	if event.is_action_pressed(&"jump"):
 		if multiplayer.is_server():
 			jump_requested = true
 		else:
