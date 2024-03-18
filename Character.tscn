@@ -2,20 +2,10 @@
 
 [ext_resource type="Script" path="res://Character.gd" id="1_6e760"]
 [ext_resource type="Texture2D" uid="uid://dv88bqqwfh0de" path="res://godot.svg" id="2_whetk"]
+[ext_resource type="Script" path="res://addons/jam_launch/core/JamSync.gd" id="3_b70cf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5plvq"]
 size = Vector2(63, 63)
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_5imib"]
-properties/0/path = NodePath(".:nametag")
-properties/0/spawn = true
-properties/0/replication_mode = 0
-properties/1/path = NodePath(".:pid")
-properties/1/spawn = true
-properties/1/replication_mode = 0
-properties/2/path = NodePath(".:position")
-properties/2/spawn = true
-properties/2/replication_mode = 0
 
 [node name="Character" type="CharacterBody2D"]
 script = ExtResource("1_6e760")
@@ -64,5 +54,7 @@ theme_override_font_sizes/font_size = 10
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_5imib")
+[node name="JamSync" type="Node" parent="."]
+script = ExtResource("3_b70cf")
+spawn_properties = Array[String](["position", "pid", "nametag"])
+sync_properties = Array[String](["position"])
