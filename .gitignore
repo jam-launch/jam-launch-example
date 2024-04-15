@@ -3,3 +3,4 @@
 *.translation
 export_presets.cfg
 webrtc/
+build/
