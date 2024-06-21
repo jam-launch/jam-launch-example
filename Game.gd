@@ -86,8 +86,6 @@ func _on_jam_connect_player_verified(pid: int, pinfo):
 
 # Saves a contrived "game log" in response to the server shutting down
 func _on_jam_connect_server_shutting_down():
-	if not jc.server:
-		return #P2P
 	if not multiplayer.is_server() or jc.server.dev_mode:
 		return
 		
@@ -103,8 +101,6 @@ func _on_jam_connect_server_shutting_down():
 # Load part of the contrived "game log" from the previous function as prev_log_text in response to
 # the server starting up.
 func _on_jam_connect_server_pre_ready():
-	if not jc.server:
-		return #P2P
 	if not multiplayer.is_server() or jc.server.dev_mode:
 		return
 	
@@ -123,11 +119,10 @@ func _on_jam_connect_server_pre_ready():
 		n += 1
 		line = prev_log.get_line()
 
-
 func _on_jam_connect_local_player_joining():
 	$HUD.visible = true
 	$HUD/TouchControl.visible = OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios")
-	
+
 func _on_jam_connect_local_player_joined(pinfo: Dictionary):
 	if OS.is_debug_build():
 		return
