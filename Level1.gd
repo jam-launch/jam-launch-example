@@ -2,14 +2,13 @@ extends Node2D
 
 var character_scn = preload("res://Character.tscn")
 
-func spawn_player(pid: int, nametag: String, player_data):
+func spawn_player(pid: int, nametag: String):
 	var p: CharacterBody2D = character_scn.instantiate()
 	p.pid = pid
 	p.nametag = nametag
 	p.position = $SpawnPoints.get_children().pick_random().position
 	p.name = str(pid)
 	$Players.add_child(p, true)
-	p.set_player_data(player_data)
 
 func remove_player(pid):
 	var p = $Players.get_node(str(pid))

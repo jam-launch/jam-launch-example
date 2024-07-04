@@ -31,17 +31,9 @@ var x_movement: float = 0.0
 
 var last_x_input: float
 
-
 func _ready():
 	if multiplayer.get_unique_id() == pid:
 		$Camera2D.make_current()
-	
-
-func set_player_data(data):
-	if data == null:
-		playtime = 0.0
-		return
-	playtime = float(data["playtime"] as String)
 
 @rpc("any_peer")
 func do_a_jump():
@@ -74,6 +66,8 @@ func _process(delta):
 	
 	if multiplayer.get_unique_id() != pid:
 		return
+	
+	# local player controls
 	var x_input = Input.get_axis("ui_left", "ui_right")
 	if x_input != last_x_input:
 		if multiplayer.is_server():
