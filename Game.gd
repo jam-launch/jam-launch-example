@@ -15,7 +15,7 @@ func _ready():
 func _on_jam_connect_player_connected(pid: int, username: String):
 	$Level1.spawn_player(pid, username)
 
-func _on_jam_connect_player_disconnected(pid: int, username: String):
+func _on_jam_connect_player_disconnected(pid: int, _username: String):
 	$Level1.remove_player(pid)
 
 #
@@ -47,13 +47,13 @@ func _on_jam_connect_local_player_left():
 	$TitleZone/TitleCam.make_current()
 
 func _on_jump_button_down():
-	var e = InputEventAction.new()
+	var e := InputEventAction.new()
 	e.action = &"jump"
 	e.pressed = true
 	Input.parse_input_event(e)
 
 func _on_jump_button_up():
-	var e = InputEventAction.new()
+	var e := InputEventAction.new()
 	e.action = &"jump"
 	e.pressed = false
 	Input.parse_input_event(e)

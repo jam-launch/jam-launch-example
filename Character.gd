@@ -18,7 +18,7 @@ var playtime: float = 0.0:
 	set(val):
 		playtime = val
 		if multiplayer.is_server():
-			set_playtime.rpc(val)
+			set_playtime. rpc (val)
 		else:
 			$Playtime.text = "%.1f" % val
 
@@ -68,7 +68,7 @@ func _process(delta):
 		return
 	
 	# local player controls
-	var x_input = Input.get_axis("ui_left", "ui_right")
+	var x_input := Input.get_axis("ui_left", "ui_right")
 	if x_input != last_x_input:
 		if multiplayer.is_server():
 			x_movement = clampf(x_input, -1.0, 1.0)
