@@ -43,6 +43,7 @@ func _on_jam_connect_local_player_joining():
 	$HUD/TouchControl.visible = OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios")
 
 func _on_jam_connect_local_player_left():
+	$Level1.reset()
 	$HUD.visible = false
 	$TitleZone/TitleCam.make_current()
 

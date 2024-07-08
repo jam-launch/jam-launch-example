@@ -17,3 +17,7 @@ func remove_player(pid):
 
 func get_players():
 	return $Players.get_children()
+
+func reset():
+	for p in $Players.get_children():
+		p.queue_free()
