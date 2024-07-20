@@ -164,3 +164,4 @@ script = ExtResource("3_21l01")
 [connection signal="local_player_left" from="JamConnect" to="." method="_on_jam_connect_local_player_left"]
 [connection signal="player_connected" from="JamConnect" to="." method="_on_jam_connect_player_connected"]
 [connection signal="player_disconnected" from="JamConnect" to="." method="_on_jam_connect_player_disconnected"]
+[connection signal="server_post_ready" from="JamConnect" to="." method="_on_jam_connect_server_post_ready"]

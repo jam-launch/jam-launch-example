@@ -4,6 +4,8 @@ extends Node2D
 @onready var console = $HUD/M/HB/ChatConsole
 @onready var jc: JamConnect = $JamConnect
 
+var the_api_key: String = ""
+
 func _ready():
 	console.jam_connect = jc
 	hud_menu.get_popup().id_pressed.connect(_on_menu_selection)
@@ -70,3 +72,14 @@ func _on_left_button_down():
 
 func _on_left_button_up():
 	Input.action_release(&"ui_left")
+
+# Example of fetching project variables in production after the server is in the "ready" state
+func _on_jam_connect_server_post_ready():
+	if jc.server.dev_mode:
+		return
+	var res = await jc.server.callback_api.get_vars(["THE_API_KEY"])
+	if res.errored:
+		printerr(res.error_msg)
+		return
+	print(res.data)
+	print("fetched API key value: %s" % [res.data["vars"]["THE_API_KEY"]])
