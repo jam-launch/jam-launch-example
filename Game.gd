@@ -73,13 +73,33 @@ func _on_left_button_down():
 func _on_left_button_up():
 	Input.action_release(&"ui_left")
 
-# Example of fetching project variables in production after the server is in the "ready" state
+
 func _on_jam_connect_server_post_ready():
 	if jc.server.dev_mode:
 		return
+	
+	# Example of fetching project variables in production after the server is in the "ready" state
 	var res = await jc.server.callback_api.get_vars(["THE_API_KEY"])
 	if res.errored:
 		printerr(res.error_msg)
 		return
 	print(res.data)
 	print("fetched API key value: %s" % [res.data["vars"]["THE_API_KEY"]])
+	
+	# Example of using the data API to read and write persistent data
+	res = await jc.server.data_api.get_object("gamestamp")
+	var counter = 0
+	if res.errored:
+		printerr("Failed to get 'gamestamp' - ", res.error_msg)
+	else:
+		print("Got gamestamp data: ", res.data)
+		counter = res.data["counter"] + 1
+	
+	res = await  jc.server.data_api.put_object("gamestamp", {
+		"started": Time.get_datetime_string_from_system(true),
+		"message": "this message is for next time",
+		"counter": counter # this wouldn't be a precise way to count sessions as there is a potential race condition
+	})
+	if res.errored:
+		printerr("Failed to put 'gamestamp' - ", res.error_msg)
+	
