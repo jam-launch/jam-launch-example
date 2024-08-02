@@ -153,6 +153,9 @@ text = "Jump"
 [node name="JamConnect" type="Node" parent="."]
 script = ExtResource("3_21l01")
 
+[node name="GameTimeLimit" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="pressed" from="HUD/M/HB/VB/Console" to="." method="_on_console_pressed"]
 [connection signal="button_down" from="HUD/TouchControl/Left" to="." method="_on_left_button_down"]
 [connection signal="button_up" from="HUD/TouchControl/Left" to="." method="_on_left_button_up"]
@@ -165,3 +168,4 @@ script = ExtResource("3_21l01")
 [connection signal="player_connected" from="JamConnect" to="." method="_on_jam_connect_player_connected"]
 [connection signal="player_disconnected" from="JamConnect" to="." method="_on_jam_connect_player_disconnected"]
 [connection signal="server_post_ready" from="JamConnect" to="." method="_on_jam_connect_server_post_ready"]
+[connection signal="timeout" from="GameTimeLimit" to="." method="_on_game_time_limit_timeout"]

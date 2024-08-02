@@ -10,11 +10,18 @@ func _ready():
 	console.jam_connect = jc
 	hud_menu.get_popup().id_pressed.connect(_on_menu_selection)
 
+func _on_game_time_limit_timeout():
+	if jc.server:
+		print("Game time limit reached - shutting down...")
+		jc.server.shut_down()
+
 #
 # Server actions for player join/leave
 #
 
 func _on_jam_connect_player_connected(pid: int, username: String):
+	$GameTimeLimit.stop()
+	$GameTimeLimit.start(60 * 30)
 	$Level1.spawn_player(pid, username)
 
 func _on_jam_connect_player_disconnected(pid: int, _username: String):
@@ -73,9 +80,14 @@ func _on_left_button_down():
 func _on_left_button_up():
 	Input.action_release(&"ui_left")
 
+#
+# Server API examples
+#
 
 func _on_jam_connect_server_post_ready():
-	if jc.server.dev_mode:
+	$GameTimeLimit.start(60 * 15)
+	
+	if jc.server.dev_mode and not jc.server.has_dev_keys:
 		return
 	
 	# Example of fetching project variables in production after the server is in the "ready" state
@@ -102,4 +114,3 @@ func _on_jam_connect_server_post_ready():
 	})
 	if res.errored:
 		printerr("Failed to put 'gamestamp' - ", res.error_msg)
-	
