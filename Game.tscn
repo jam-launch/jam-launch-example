@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" path="res://Game.gd" id="1_tno48"]
 [ext_resource type="PackedScene" uid="uid://cbyjjq47i081w" path="res://Level1.tscn" id="2_3t1np"]
-[ext_resource type="Texture2D" uid="uid://cjtoctkw3rj7r" path="res://addons/jam_launch/assets/star-jar-outlined_16x16.png" id="2_moika"]
+[ext_resource type="Texture2D" uid="uid://cc8s8m60ey3w6" path="res://addons/jam_launch/assets/star-jar-outlined_16x16.png" id="2_moika"]
 [ext_resource type="Script" path="res://addons/jam_launch/core/JamConnect.gd" id="3_21l01"]
 [ext_resource type="PackedScene" uid="uid://bp045ebtvh6js" path="res://addons/jam_launch/ui/ChatConsole.tscn" id="3_arn8j"]
-[ext_resource type="Texture2D" uid="uid://na8vvk6ggh0k" path="res://addons/jam_launch/assets/icons/arrow_back.svg" id="5_tgp0s"]
-[ext_resource type="Texture2D" uid="uid://b40t4dy1maj8d" path="res://addons/jam_launch/assets/icons/arrow_forward.svg" id="6_nenls"]
+[ext_resource type="Texture2D" uid="uid://xgronrdov2w5" path="res://addons/jam_launch/assets/icons/arrow_back.svg" id="5_tgp0s"]
+[ext_resource type="Texture2D" uid="uid://cmm2ltprfyol2" path="res://addons/jam_launch/assets/icons/arrow_forward.svg" id="6_nenls"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_tno48")
@@ -101,7 +101,6 @@ text = "..."
 flat = false
 item_count = 2
 popup/item_0/text = "Leave Game"
-popup/item_0/id = 0
 popup/item_1/text = "Exit to Desktop"
 popup/item_1/id = 1
 

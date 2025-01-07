@@ -1,13 +1,11 @@
 [gd_scene load_steps=5 format=3 uid="uid://cbyjjq47i081w"]
 
 [ext_resource type="Script" path="res://Level1.gd" id="1_bfqtw"]
-[ext_resource type="Texture2D" uid="uid://cjtoctkw3rj7r" path="res://addons/jam_launch/assets/star-jar-outlined_16x16.png" id="2_qx0tg"]
+[ext_resource type="Texture2D" uid="uid://cc8s8m60ey3w6" path="res://addons/jam_launch/assets/star-jar-outlined_16x16.png" id="2_qx0tg"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_58nb5"]
 texture = ExtResource("2_qx0tg")
 0:0/0 = 0
-0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-0:0/0/physics_layer_0/angular_velocity = 0.0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSet" id="TileSet_imune"]
