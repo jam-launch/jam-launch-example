@@ -17,10 +17,7 @@ var playtime_interval: float = 1.0
 var playtime: float = 0.0:
 	set(val):
 		playtime = val
-		if multiplayer.is_server():
-			set_playtime. rpc (val)
-		else:
-			$Playtime.text = "%.1f" % val
+		$Playtime.text = "%.1f" % val
 
 @rpc
 func set_playtime(pt: float):
@@ -59,10 +56,10 @@ func _unhandled_input(event):
 
 func _process(delta):
 	if multiplayer.is_server():
-		playtime_counter += delta
-		if playtime_counter >= playtime_interval:
-			playtime += playtime_counter
-			playtime_counter = 0.0
+		playtime += delta
+		$Playtime.rotation_degrees += 80 * delta
+		while $Playtime.rotation_degrees > 180:
+			$Playtime.rotation_degrees -= 360
 	
 	if multiplayer.get_unique_id() != pid:
 		return

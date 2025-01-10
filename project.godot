@@ -30,7 +30,7 @@ window/stretch/mode="viewport"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/jam_launch/editor_plugin/plugin.cfg")
+enabled=PackedStringArray("res://addons/jam_launch/editor_plugin/plugin.cfg", "res://addons/jam_launch/jam_sync_editor_plugin/plugin.cfg")
 
 [input]
 

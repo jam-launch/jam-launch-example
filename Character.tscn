@@ -1,11 +1,47 @@
-[gd_scene load_steps=5 format=3 uid="uid://8vvkqmrl52x8"]
+[gd_scene load_steps=13 format=3 uid="uid://8vvkqmrl52x8"]
 
 [ext_resource type="Script" path="res://Character.gd" id="1_6e760"]
 [ext_resource type="Texture2D" uid="uid://dv88bqqwfh0de" path="res://godot.svg" id="2_whetk"]
-[ext_resource type="Script" path="res://addons/jam_launch/core/JamSync.gd" id="3_b70cf"]
+[ext_resource type="Script" path="res://addons/jam_launch/core/JamSync.gd" id="3_w54sn"]
+[ext_resource type="Script" path="res://addons/jam_launch/core/JamSyncConfig.gd" id="4_4ilgi"]
+[ext_resource type="Script" path="res://addons/jam_launch/core/JamSyncProperty.gd" id="5_7b11g"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5plvq"]
 size = Vector2(63, 63)
+
+[sub_resource type="Resource" id="Resource_sefp6"]
+script = ExtResource("5_7b11g")
+path = ":pid"
+interval_mult = 1
+sync_mode = 1
+
+[sub_resource type="Resource" id="Resource_0taq4"]
+script = ExtResource("5_7b11g")
+path = ":position"
+interval_mult = 1
+sync_mode = 2
+
+[sub_resource type="Resource" id="Resource_bogkl"]
+script = ExtResource("5_7b11g")
+path = ":nametag"
+interval_mult = 1
+sync_mode = 1
+
+[sub_resource type="Resource" id="Resource_v2iwp"]
+script = ExtResource("5_7b11g")
+path = ":playtime"
+interval_mult = 20
+sync_mode = 0
+
+[sub_resource type="Resource" id="Resource_6aafo"]
+script = ExtResource("5_7b11g")
+path = "Playtime:rotation"
+interval_mult = 10
+sync_mode = 3
+
+[sub_resource type="Resource" id="Resource_powfq"]
+script = ExtResource("4_4ilgi")
+sync_properties = Array[ExtResource("5_7b11g")]([SubResource("Resource_sefp6"), SubResource("Resource_0taq4"), SubResource("Resource_bogkl"), SubResource("Resource_v2iwp"), SubResource("Resource_6aafo")])
 
 [node name="Character" type="CharacterBody2D"]
 script = ExtResource("1_6e760")
@@ -18,6 +54,7 @@ texture = ExtResource("2_whetk")
 shape = SubResource("RectangleShape2D_5plvq")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+process_callback = 0
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 
@@ -33,6 +70,8 @@ offset_right = 20.0
 offset_bottom = -32.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(20, 11)
+size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 10
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -44,17 +83,17 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -20.0
-offset_top = -68.0
+offset_top = -80.0
 offset_right = 20.0
-offset_bottom = -45.0
+offset_bottom = -57.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(20, 12)
 size_flags_vertical = 8
 theme_override_font_sizes/font_size = 10
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="JamSync" type="Node" parent="."]
-script = ExtResource("3_b70cf")
-spawn_properties = Array[String](["position", "pid", "nametag"])
-sync_properties = Array[String](["position"])
+script = ExtResource("3_w54sn")
+sync_config = SubResource("Resource_powfq")
