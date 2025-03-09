@@ -10,18 +10,11 @@ func _ready():
 	console.jam_connect = jc
 	hud_menu.get_popup().id_pressed.connect(_on_menu_selection)
 
-func _on_game_time_limit_timeout():
-	if jc.server:
-		print("Game time limit reached - shutting down...")
-		jc.server.shut_down()
-
 #
 # Server actions for player join/leave
 #
 
 func _on_jam_connect_player_connected(pid: int, username: String):
-	$GameTimeLimit.stop()
-	$GameTimeLimit.start(60 * 30)
 	$Level1.spawn_player(pid, username)
 
 func _on_jam_connect_player_disconnected(pid: int, _username: String):
@@ -85,8 +78,6 @@ func _on_left_button_up():
 #
 
 func _on_jam_connect_server_post_ready():
-	$GameTimeLimit.start(60 * 15)
-	
 	if jc.server.dev_mode and not jc.server.has_dev_keys:
 		return
 	
