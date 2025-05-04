@@ -152,7 +152,7 @@ text = "Jump"
 [node name="JamConnect" type="Node" parent="."]
 script = ExtResource("3_21l01")
 maximum_uptime_minutes = 30
-maximum_player_count = 15
+maximum_player_count = 20
 
 [connection signal="pressed" from="HUD/M/HB/VB/Console" to="." method="_on_console_pressed"]
 [connection signal="button_down" from="HUD/TouchControl/Left" to="." method="_on_left_button_down"]
